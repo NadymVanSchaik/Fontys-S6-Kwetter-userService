@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const mongoose = require('mongoose')
+require('dotenv/config')
 
 const config = {
     name: 'user-service',
@@ -18,7 +19,7 @@ app.use(cors());
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
 //Import
-const usersRoute = require('./routes/games');
+const usersRoute = require('./routes/users');
 app.use('/users', usersRoute);
 
 
