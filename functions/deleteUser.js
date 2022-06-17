@@ -1,5 +1,8 @@
-const User = require('../models/User')
+const publishToQueue = require('../services/MQservices')
 
 function deleteUser(user) {
-    //TODO send update with rabbitMQ to kweetService to delete userName of user userID
+    queueName = "delete-user"
+    payload = user
+    publishToQueue(queueName, payload);
 }
+module.exports = deleteUser;

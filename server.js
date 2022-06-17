@@ -51,13 +51,14 @@ app.listen(config.port, config.host, (e)=> {
 var amqp = require('amqplib/callback_api');
 const CONN_URL = process.env.MQ_CONNECTION;
 
-const updateKweetCounter = require('./functions/updateKweetCounter');
 
+const updateKweetCounter = require('./functions/updateKweetCounter');
 amqp.connect(CONN_URL, function (err, conn) {
     conn.createChannel(function (err, ch) {
         ch.consume('update-kweet-counter', function (msg) {
+            ch.ack(msg)
             updateKweetCounter(msg.content.toString())
-      },{ noAck: true }
+      },{ noAck: false }
     );
-  });
+    });
 });

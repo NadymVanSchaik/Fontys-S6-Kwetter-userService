@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const updateUser = require('../functions/updateUser')
 const deleteUser = require('../functions/deleteUser');
 const createUser = require('../functions/createUser');
-const { remove } = require('../models/User');
+
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -36,14 +36,17 @@ router.post('/', jsonParser, (req, res) => {
 //Update User
 router.patch('/:id', jsonParser, async (req, res) => {
     try {
-        const updatedUser = await User.updateOne(
+        updateUser({
+            id: req.params.id,
+            name: req.body.name
+        });
+        const user = await User.updateOne(
             {_id: req.params.id},
             {$set: {
                 name: req.body.name, 
             }}
-        );
-        updateUser(updatedUser);
-        res.json(updatedUser)
+        ).exec()
+        res.json(user)
     } catch(err) {
         console.log(err)
         res.json({message: err})
@@ -55,7 +58,7 @@ router.delete('/:id', async (req, res) => {
     try {
         const removedUser = await User.remove({_id: req.params.id});
         res.json(removedUser)
-        deleteUser(removedUser)
+        deleteUser(req.params.id)
     } catch(err) {
         res.json({message: err})
     }

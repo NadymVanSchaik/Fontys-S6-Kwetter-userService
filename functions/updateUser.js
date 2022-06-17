@@ -1,5 +1,11 @@
-const User = require('../models/User')
+const publishToQueue = require('../services/MQservices')
 
 function updateUser(user) {
-    //TODO send update with rabbitMQ to kweetService to update userName of user userID
+    queueName = "update-user"
+    id = user.id.toString()
+    userName = user.name.toString()
+    payload =  id+"|"+userName
+    publishToQueue(queueName, payload);
 }
+
+module.exports = updateUser;
