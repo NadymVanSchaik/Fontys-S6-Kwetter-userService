@@ -5,7 +5,12 @@ function updateUser(user) {
     id = user.id.toString()
     userName = user.name.toString()
     payload =  id+"|"+userName
-    publishToQueue(queueName, payload);
+    for (let i = 0; i < 50; i++) {
+        messagePayload = payload + "|"+i
+        console.log(messagePayload)
+        publishToQueue(queueName, messagePayload);
+    }
+    
 }
 
 module.exports = updateUser;
