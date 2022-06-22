@@ -7,12 +7,7 @@ services:
       context: ./
     ports:
       - "3000:3000"
-    networks:
-      - kwetter
     env_file: ./.env
-networks:
-  kwetter:
-    driver: bridge
 
 volumes: 
   db-config:
